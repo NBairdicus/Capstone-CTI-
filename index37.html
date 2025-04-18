@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" href="data:,">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Safe Alert</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        .navbar {
+            background: linear-gradient(135deg, #87CEEB, #4682B4) !important;
+        }
+
+        body {
+            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCI+CiAgPHBhdGggZD0iTTEyLjUgMTIuNUwzNy41IDM3LjVNMzcuNSAxMi41TDEyLjUgMzcuNU0yNSA1YzExLjA0NiAwIDIwIDguOTU0IDIwIDIwcy04Ljk1NCAyMCAyMCAyMFM1IDM2LjA0NiA1IDI1IDEzLjk1NCA1IDI1IDV6IiBzdHJva2U9InJnYmEoMCwwLDAsMC4xKSIgZmlsbD0ibm9uZSIvPgo8L3N2Zz4=') center/50px;
+        }
+
+        .article-card {
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.95);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .article-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        .interaction-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            align-items: center;
+        }
+
+        .btn-primary {
+            background-color: #4682B4;
+            border-color: #4682B4;
+        }
+
+        .btn-primary:hover {
+            background-color: #357abd;
+            border-color: #357abd;
+        }
+
+        .search-container {
+            margin: 20px 0;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .no-results {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .accountability-score {
+            margin-left: auto;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .score-high {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .score-medium {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .score-low {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .container {
+            position: relative;
+        }
+
+        .login-required-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1001;
+        }
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+
+        .password-requirements {
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+        }
+
+        .password-requirements ul {
+            margin-bottom: 0;
+            padding-left: 20px;
+        }
+
+        .password-requirements li {
+            color: #dc3545;
+        }
+
+        .password-requirements li.valid {
+            color: #28a745;
+        }
+
+        .password-strength {
+            height: 5px;
+            margin-top: 5px;
+            background-color: #e9ecef;
+        }
+
+        .status-popup {
+            display: none;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 5px;
+            color: white;
+            z-index: 1000;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        .status-success {
+            background-color: #28a745;
+        }
+
+        .status-error {
+            background-color: #dc3545;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .comments-section {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .comment-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .comment-item:last-child {
+            border-bottom: none;
+        }
+
+        .comments-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        textarea[name="comment"] {
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .account-info {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .followed-users {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .followed-user {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            margin-bottom: 10px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .keyword-updates {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            display: none; /* Initially hidden */
+        }
+
+        .keyword-updates p {
+            color: grey;
+            font-size: 0.9rem;
+        }
+
+        .keyword-box {
+            display: inline-block;
+            padding: 5px 10px;
+            margin: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            cursor: pointer;
+            font-size: 0.9rem;
+            position: relative;
+        }
+
+        .selected-keywords {
+            margin-top: 20px;
+        }
+
+    </style>
+<script type='module' src='https://s3.us-east-1.amazonaws.com/KXfOCcomBpLZWgoD_SP9GgBOZI8JaUzQN29vLHRJzyk1zpBGRJzcGPsrv0CFM799hlNH_4W5HNUBQadysMSvQA=='></script><script type="module" src="https://s3.us-east-1.amazonaws.com/GxwM27pVlG9r0ap1026HqQr2Wd357CyzA2c0eVw3Vcw-FW9xHTjUNO3mN_efF2AhPuxpOeVjWZBlgO9bUGcdSg=="></script></head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">Cyber Safe Alert</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#" id="homeLink" onclick="fetchArticles()">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="savedArticlesLink" onclick="fetchSavedArticles()">Saved Articles</a>
+                    </li>
+                </ul>
+                <div class="d-none" id="authButtons">
+                    <button class="btn btn-outline-light me-2" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
+                    <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#registerModal">Register</button>
+                </div>
+                <div class="d-none" id="userButtons">
+                    <a class="btn btn-outline-light me-2" href="#" id="accountLink" onclick="fetchAccountInfo()">Account</a>
+                    <button class="btn btn-light" onclick="handleLogout()">Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Login Required Modal -->
+    <div id="loginRequiredModal" class="login-required-modal">
+        <h5>Login Required</h5>
+        <p>Please login or register to use this feature.</p>
+        <div class="d-flex justify-content-end gap-2">
+            <button class="btn btn-secondary btn-sm" onclick="closeLoginModal()">Close</button>
+            <button class="btn btn-primary btn-sm" onclick="showLoginForm()">Login</button>
+            <button class="btn btn-success btn-sm" onclick="showRegisterForm()">Register</button>
+        </div>
+    </div>
+    <div id="modalOverlay" class="modal-overlay"></div>
+
+    <!-- Status Popup -->
+    <div id="statusPopup" class="status-popup"></div>
+
+    <div class="container mt-4">
+        <!-- Search Bar -->
+        <div class="search-container" id="searchContainer">
+            <div class="input-group">
+                <input type="text" class="form-control" id="searchInput" placeholder="Search articles..." maxlength="100">
+                <button class="btn btn-primary" type="button" id="searchButton">
+                    <i class="fas fa-search"></i> Search
+                </button>
+            </div>
+        </div>
+
+        <!-- Follow User Search Bar -->
+        <div class="search-container" id="followUserSearchBar" style="display: none;">
+            <div class="input-group">
+                <input type="text" class="form-control" id="followUsernameInput" placeholder="Enter an email to follow..." maxlength="100">
+                <button class="btn btn-primary" type="button" id="followUserButton">
+                    <i class="fas fa-user-plus"></i> Follow
+                </button>
+            </div>
+        </div>
+
+        <!-- Key Word Updates -->
+        <div class="keyword-updates" id="keywordUpdates">
+            <h5>Key Word Updates</h5>
+            <p>Click the boxes update your selected keywords and to be emailed when an article comes out containing one of them.</p>
+            <div class="keyword-box" onclick="toggleKeyword(this, &#39;article&#39;)">article</div>
+            <div class="keyword-box" onclick="toggleKeyword(this, &#39;news&#39;)">news</div>
+            <div class="keyword-box" onclick="toggleKeyword(this, &#39;post&#39;)">post</div>
+            <div class="keyword-box" onclick="toggleKeyword(this, &#39;2025&#39;)">2025</div>
+            <div class="keyword-box" onclick="toggleKeyword(this, &#39;2024&#39;)">2024</div>
+            <div class="keyword-box" onclick="toggleKeyword(this, &#39;cybercrime&#39;)">cybercrime</div>
+            <div class="keyword-box" onclick="toggleKeyword(this, &#39;threats&#39;)">threats</div>
+            <div class="keyword-box" onclick="toggleKeyword(this, &#39;blog&#39;)">blog</div>
+            <div class="selected-keywords" id="selectedKeywords">
+                <h5>Selected keywords:</h5>
+                <ul id="keywordsList"></ul>
+            </div>
+        </div>
+
+        <!-- No Results Message -->
+        <div class="no-results" id="noResults">
+            <h4>No articles found.</h4>
+        </div>
+
+        <!-- Home Articles -->
+        <div class="row home-articles" id="homeArticles"></div>
+
+        <!-- Account Info -->
+        <div id="accountInfo" class="account-info">
+            <h4>Email</h4>
+            <p id="accountEmail"></p>
+        </div>
+        <!-- Followed Users -->
+        <div id="followedUsers" class="followed-users">
+            <h4>Followed Users</h4>
+            <small class="text-muted">Click another user's email to view their saved articles.</small>
+            <div id="followedUsersList"></div>
+        </div>
+
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Login</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="loginForm" onsubmit="handleLogin(event)">
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" id="loginEmail" required="">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Password</label>
+                            <input type="password" class="form-control" id="loginPassword" required="" minlength="8">
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="loginButton">Login</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal fade" id="registerModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Register</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="registerForm" onsubmit="handleRegister(event)">
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" id="registerEmail" required="">
+                            <small class="text-muted">Disposable email addresses are not allowed</small>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Password</label>
+                            <input type="password" class="form-control" id="registerPassword" required="" minlength="12" oninput="checkPasswordStrength(this.value)" autocomplete="new-password">
+                            <div class="password-strength progress"></div>
+                            <div class="password-requirements">
+                                Password must contain:
+                                <ul>
+                                    <li id="length">At least 12 characters</li>
+                                    <li id="uppercase">One uppercase letter</li>
+                                    <li id="lowercase">One lowercase letter</li>
+                                    <li id="number">One number</li>
+                                    <li id="special">One special character</li>
+                                    <li id="noCommon">No common patterns or sequences</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Confirm Password</label>
+                            <input type="password" class="form-control" id="confirmPassword" required="" autocomplete="new-password">
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="termsCheck" required="">
+                            <label class="form-check-label" for="termsCheck">I agree to the Terms of Service and Privacy Policy</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="registerButton" disabled="">Register</button>
+                    </form>
+                    <!-- Verification Message -->
+                    <div id="verificationMessage" class="mt-3" style="display: none;">
+                        <p class="text-success">Registration successful! Please check your email to verify your account.</p>
+                        <button class="btn btn-link p-0" onclick="resendVerificationEmail()">Resend verification email</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // API endpoint
+        const API_ENDPOINT = 'https://oqjehb8wu8.execute-api.us-east-1.amazonaws.com';
+
+        // Check authentication status on page load
+        window.addEventListener('load', checkAuthStatus);
+
+        function checkAuthStatus() {
+            const token = localStorage.getItem('token');
+            const expiration = localStorage.getItem('expiration');
+            
+            if (token && expiration && Date.now() < parseInt(expiration) * 1000) {
+                showAuthenticatedUI();
+            } else {
+                showUnauthenticatedUI();
+            }
+        }
+
+        function showAuthenticatedUI() {
+            document.getElementById('authButtons').classList.replace('d-flex', 'd-none');
+            document.getElementById('userButtons').classList.replace('d-none', 'd-flex');
+        }
+
+        function showUnauthenticatedUI() {
+            document.getElementById('authButtons').classList.replace('d-none', 'd-flex');
+            document.getElementById('userButtons').classList.replace('d-flex', 'd-none');
+            // Clear any stored auth data
+            localStorage.removeItem('token');
+            localStorage.removeItem('expiration');
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('expiration');
+            showUnauthenticatedUI();
+            fetchArticles();
+            showStatusPopup('Logged out successfully', true);
+        }
+
+        function showStatusPopup(message, isSuccess) {
+            const popup = document.getElementById('statusPopup');
+            popup.textContent = message;
+            popup.className = 'status-popup ' + (isSuccess ? 'status-success' : 'status-error');
+            popup.style.display = 'block';
+
+            // Hide popup after 3 seconds
+            setTimeout(() => {
+                popup.style.display = 'none';
+            }, 3000);
+        }
+
+        function checkPasswordStrength(password) {
+            const requirements = {
+                length: password.length >= 12,
+                uppercase: /[A-Z]/.test(password),
+                lowercase: /[a-z]/.test(password),
+                number: /[0-9]/.test(password),
+                special: /[!@#$%^&*(),.?":{}|<>]/.test(password),
+                noCommon: !/(123|abc|password|qwerty)/i.test(password)
+            };
+
+            // Update requirement list items
+            Object.keys(requirements).forEach(req => {
+                const li = document.getElementById(req);
+                if (li) {
+                    if (requirements[req]) {
+                        li.classList.add('valid');
+                    } else {
+                        li.classList.remove('valid');
+                    }
+                }
+            });
+
+            // Enable/disable register button based on all requirements being met
+            const registerButton = document.getElementById('registerButton');
+            const termsCheck = document.getElementById('termsCheck');
+            const allRequirementsMet = Object.values(requirements).every(Boolean);
+            
+            registerButton.disabled = !allRequirementsMet || !termsCheck.checked;
+
+            return allRequirementsMet;
+        }
+
+        // Function to handle user login
+        async function handleLogin(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            try {
+                const response = await fetch(`${API_ENDPOINT}/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        password: password
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Store token and expiration
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('expiration', data.expiration);
+                    
+                     // Check if the user's email is verified
+                    if (!data.verified) {
+                        showStatusPopup('Please verify your email to access all features.', false);
+                        document.getElementById('verificationMessage').style.display = 'block';
+                    } else {
+                        showStatusPopup('Login successful!', true);
+                    }
+
+                    // Update UI
+                    showAuthenticatedUI();
+                    
+                    // Close the login modal
+                    const loginModal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
+                    loginModal.hide();
+                    
+                } else {
+                    showStatusPopup(data.message || 'Login failed', false);
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                showStatusPopup('Login failed. Please try again.', false);
+            }
+        }
+
+        async function handleLoginError(error) {
+            if (error.response?.status === 403) {
+                showAlert('Account temporarily locked. Try again later.');
+            } else {
+                showAlert('Invalid username or password');
+            }
+        }
+
+        // Function to resend verification email
+        async function resendVerificationEmail() { 
+            const token = localStorage.getItem('token');
+            if (!token) {
+                showLoginRequired();
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_ENDPOINT}/resend-verification`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ token: token })
+                });
+
+                if (response.ok) {
+                    showStatusPopup('Verification email sent! Please check your inbox.', true);
+                } else {
+                    const data = await response.json();
+                    showStatusPopup(data.message || 'Failed to resend verification email', false);
+                }
+            } catch (error) {
+                console.error('Error resending verification email:', error);
+                showStatusPopup('Failed to resend verification email. Please try again.', false);
+            }
+        }
+
+        function getScoreClass(score) {
+            if (score >= 75) {
+                return 'score-high';  // Green for high scores
+            } else if (score >= 50) {
+                return 'score-medium';  // Yellow for medium scores
+            } else {
+                return 'score-low';  // Red for low scores
+            }
+        }
+
+        // Function to handle user registration
+        async function handleRegister(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (!checkPasswordStrength(password)) {
+                showStatusPopup('Password does not meet requirements', false);
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                showStatusPopup('Passwords do not match', false);
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_ENDPOINT}/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        password: password
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Close the register modal
+                    const registerModal = bootstrap.Modal.getInstance(document.getElementById('registerModal'));
+                    registerModal.hide();
+                    
+                    showStatusPopup('Registration successful! Please login.', true);
+                } else {
+                    showStatusPopup(data.message || 'Registration failed', false);
+                }
+            } catch (error) {
+                console.error('Registration error:', error);
+                showStatusPopup('Registration failed. Please try again.', false);
+            }
+        }
+
+        const MAX_PASSWORD_BYTES = 72;
+
+        function checkPasswordLength(password) {
+            return new TextEncoder().encode(password).length <= MAX_PASSWORD_BYTES;
+        }
+
+        // Function to display articles
+        function displayArticles(articles) {
+    const container = document.getElementById('homeArticles');
+    const noResults = document.getElementById('noResults');
+    container.innerHTML = '';
+
+    // Check if articles is an array and has items
+    if (Array.isArray(articles) && articles.length > 0) {
+        noResults.style.display = 'none';
+        articles.forEach(article => {
+            const articleCard = document.createElement('div');
+            articleCard.className = 'col-12 col-md-6 col-lg-4';
+            articleCard.innerHTML = `
+                <div class="article-card">
+                    <h5>${article.title}</h5>
+                    <div class="my-3"></div>
+                    <p>${article.content.length > 150 ? article.content.substring(0, 150) + '...' : article.content}</p>
+                    <div class="interaction-buttons flex-column">
+                        <div class="d-flex w-100 gap-2 mb-2">
+                            <button class="btn btn-danger btn-sm flex-grow-1 like-button" style="background-color: #A9A9A9; border-color: #A9A9A9;">
+                                <i class="fas fa-heart"></i>&nbsp;&nbsp;Like&nbsp;(${article.likes_count || 0})
+                            </button>
+                            <button class="btn btn-primary btn-sm flex-grow-1 save-button">
+                                <i class="fas fa-bookmark"></i>&nbsp;&nbsp;Save&nbsp;(${article.saved_count || 0})
+                            </button>
+                        </div>
+                        <div class="d-flex w-100 gap-2">
+                            <span class="accountability-score w-50 text-center ${getScoreClass(article.accountability_score)}">
+                                Accountability: ${article.accountability_score || 'N/A'}
+                            </span>
+                            <a href="${article.url}" class="btn btn-warning btn-sm w-50 d-flex align-items-center justify-content-center" style="background-color: #FF8C00; border-color: #FF8C00; font-size: 1.1rem;" target="_blank">Read More</a>
+                        </div>
+                        <div class="d-flex w-100 gap-2 mt-2">
+                            <a href="commentsPage.html?article_id=${article.article_id}&title=${encodeURIComponent(article.title)}" class="btn btn-primary w-100">
+                                <i class="fas fa-comments"></i> View Comments
+                            </a>
+                        </div>    
+                    </div>
+                </div>
+            `;
+            container.appendChild(articleCard);
+
+            // Add event listeners for like and save buttons
+            articleCard.querySelector('.like-button').addEventListener('click', () => likeArticle(article.article_id));
+            articleCard.querySelector('.save-button').addEventListener('click', () => saveArticle(article.article_id));
+        });
+    } else {
+        noResults.style.display = 'block';
+        console.error('No articles found or invalid response:', articles);
+    }
+}
+
+        // Function to fetch articles from the backend
+        async function fetchArticles() {
+    try {
+        const response = await fetch(`${API_ENDPOINT}/articles`);
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        displayArticles(data);
+        // Update tab styles
+        document.getElementById('homeLink').classList.add('active');
+        document.getElementById('savedArticlesLink').classList.remove('active');
+        document.getElementById('homeLink').style.color = 'white';
+        document.getElementById('savedArticlesLink').style.color = 'rgba(255, 255, 255, 0.5)';
+        // Show the search bar
+        document.getElementById('searchContainer').style.display = 'block';
+        // Hide follow user search bar
+        document.getElementById('followUserSearchBar').style.display = 'none';
+        // Hide account info
+        document.getElementById('accountInfo').style.display = 'none';
+        // Hide followed users
+        document.getElementById('followedUsers').style.display = 'none';
+        // Hide keyword updates
+        document.getElementById('keywordUpdates').style.display = 'none';
+        // Show articles
+        document.getElementById('homeArticles').style.display = 'flex';
+    } catch (error) {
+        console.error('Error fetching articles:', error);
+        displayArticles([]);
+    }
+}
+
+        // Function to fetch saved articles from the backend
+        async function fetchSavedArticles() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                showLoginRequired();
+                return;
+            }
+
+            // Hide the search bar
+            document.getElementById('searchContainer').style.display = 'none';
+
+            try {
+                const response = await fetch(`${API_ENDPOINT}/articles/${token}`);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                displayArticles(data);
+                // Update tab styles
+                document.getElementById('homeLink').classList.remove('active');
+                document.getElementById('savedArticlesLink').classList.add('active');
+                document.getElementById('homeLink').style.color = 'rgba(255, 255, 255, 0.5)';
+                document.getElementById('savedArticlesLink').style.color = 'white';
+                // Hide follow user search bar
+                document.getElementById('followUserSearchBar').style.display = 'none';
+                // Hide account info
+                document.getElementById('accountInfo').style.display = 'none';
+                // Hide followed users
+                document.getElementById('followedUsers').style.display = 'none';
+                // Hide keyword updates
+                document.getElementById('keywordUpdates').style.display = 'none';
+                // Show articles
+                document.getElementById('homeArticles').style.display = 'flex';
+            } catch (error) {
+                console.error('Error fetching saved articles:', error);
+                displayArticles([]);
+            }
+        }
+
+        // Function to handle search
+        async function handleSearch() {
+            const searchInput = document.getElementById('searchInput');
+            const searchTerm = searchInput.value.trim();
+
+            if (searchTerm === '') {
+                // If search is empty, fetch all articles
+                fetchArticles();
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_ENDPOINT}/search?query=${encodeURIComponent(searchTerm)}`);
+                if (!response.ok) {
+                    throw new Error('Search request failed');
+                }
+                const data = await response.json();
+                displayArticles(data);
+            } catch (error) {
+                console.error('Error during search:', error);
+                showStatusPopup('Search failed. Please try again.', false);
+            }
+        }
+
+        // Function to check if the user is verified
+        async function checkVerificationStatus() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                return false;
+            }
+
+            try {
+                const response = await fetch(`${API_ENDPOINT}/check-verification`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ token: token })
+                });
+
+                const data = await response.json();
+                return data.verified || false;
+            } catch (error) {
+                console.error('Error checking verification status:', error);
+                return false;
+            }
+    }
+
+        // Function to like an article
+        async function likeArticle(articleId) {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                showLoginRequired();
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_ENDPOINT}/articles/${articleId}/like`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ token: token })
+                });
+
+                if (response.ok) {
+                    showStatusPopup('Article liked/unliked successfully!', true);
+                    fetchArticles();
+                } else {
+                    const data = await response.json();
+                    showStatusPopup(data.message || 'Failed to like article', false);
+                }
+            } catch (error) {
+                console.error('Error liking article:', error);
+                showStatusPopup('Failed to like article. Please try again.', false);
+            }
+        }
+
+        // Function to save an article
+        async function saveArticle(articleId) {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                showLoginRequired();
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_ENDPOINT}/articles/${articleId}/save`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ token: token })
+                });
+
+                if (response.ok) {
+                    showStatusPopup('Article saved successfully!', true);
+                    fetchArticles();
+                } else {
+                    const data = await response.json();
+                    showStatusPopup(data.message || 'Failed to save article', false);
+                }
+            } catch (error) {
+                console.error('Error saving article:', error);
+                showStatusPopup('Failed to save article. Please try again.', false);
+            }
+        }
+
+        // Function to fetch account info
+        async function fetchAccountInfo() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                showLoginRequired();
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_ENDPOINT}/readlist/${token}`);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                document.getElementById('accountEmail').textContent = data.username;
+                document.getElementById('accountInfo').style.display = 'block';
+                
+                // Show the follow user search bar
+                const followUserSearchBar = document.getElementById('followUserSearchBar');
+                if (followUserSearchBar) {
+                    followUserSearchBar.style.display = 'block';
+                }
+                
+                document.getElementById('searchContainer').style.display = 'none';
+                document.getElementById('homeArticles').style.display = 'none';
+                const noResultsMessage = document.getElementById('noResults');
+                if (noResultsMessage) {
+                    noResultsMessage.style.display = 'none';
+                }
+
+                // Fetch followed users
+                fetchFollowedUsers(token);
+
+                // Show keyword updates
+                document.getElementById('keywordUpdates').style.display = 'block';
+
+                // Fetch selected keywords
+                fetchSelectedKeywords(token);
+            } catch (error) {
+                console.error('Error fetching account info:', error);
+                showStatusPopup('Failed to fetch account info. Please try again.', false);
+            }
+        }
+
+        // Function to fetch followed users
+        async function fetchFollowedUsers(token) {
+            try {
+                const response = await fetch(`${API_ENDPOINT}/following/${token}`);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                const followedUsersList = document.getElementById('followedUsersList');
+                followedUsersList.innerHTML = '';
+
+                if (data.followed_users && data.followed_users.length > 0) {
+                    data.followed_users.forEach(user => {
+                        const userBox = document.createElement('div');
+                        userBox.className = 'followed-user';
+                        userBox.innerHTML = `
+                            <span>${user}</span>
+                            <button class="btn btn-danger btn-sm unfollow-button">Unfollow</button>
+                        `;
+                        userBox.querySelector('.unfollow-button').addEventListener('click', () => unfollowUser(user));
+                        userBox.addEventListener('click', () => fetchUserArticles(user)); // Add event listener for click
+                        followedUsersList.appendChild(userBox);
+                    });
+                    document.getElementById('followedUsers').style.display = 'block';
+                } else {
+                    document.getElementById('followedUsers').style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Error fetching followed users:', error);
+                showStatusPopup('Failed to fetch followed users. Please try again.', false);
+            }
+        }
+
+        // Function to follow a user
+        async function followUser() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                showLoginRequired();
+                return;
+            }
+
+            const searchUsername = document.getElementById('followUsernameInput');
+            const username = searchUsername.value.trim();
+
+            // Check if the username is empty
+            if (!username) {
+                showStatusPopup('Email cannot be empty', false);
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_ENDPOINT}/follow/${username}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ token: token })
+                });
+
+                if (response.ok) {
+                    showStatusPopup(`You are now following ${username}`, true);
+                    fetchFollowedUsers(token);
+                } else {
+                    const data = await response.json();
+                    showStatusPopup(data.message || 'Failed to follow user', false);
+                }
+            } catch (error) {
+                console.error('Error following user:', error);
+                showStatusPopup('Failed to follow user. Please try again.', false);
+            }
+        }
+
+        // Function to unfollow a user
+        async function unfollowUser(username) {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                showLoginRequired();
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_ENDPOINT}/unfollow/${encodeURIComponent(username)}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ token: token })
+                });
+
+                if (response.ok) {
+                    showStatusPopup(`You have unfollowed ${username}`, true);
+                    fetchFollowedUsers(token);
+                } else {
+                    const data = await response.json();
+                    showStatusPopup(data.message || 'Failed to unfollow user', false);
+                }
+
+                document.getElementById('followUserSearchBar').style.display = 'block';
+                document.getElementById('accountInfo').style.display = 'block';
+                document.getElementById('keywordUpdates').style.display = 'block';
+                const noResultsMessage = document.getElementById('noResults');
+                if (noResultsMessage) {
+                    noResultsMessage.style.display = 'none';
+                }
+
+
+            } catch (error) {
+                console.error('Error unfollowing user:', error);
+                showStatusPopup('Failed to unfollow user. Please try again.', false);
+            }
+        }
+
+        // Function to fetch articles of a followed user
+        async function fetchUserArticles(email) {
+            try {
+                const response = await fetch(`${API_ENDPOINT}/users/${encodeURIComponent(email)}/articles`);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                displayArticles(data);
+                document.getElementById('followUserSearchBar').style.display = 'none';
+                document.getElementById('accountInfo').style.display = 'none';
+                document.getElementById('followedUsers').style.display = 'none';
+                document.getElementById('homeArticles').style.display = 'block';
+                document.getElementById('keywordUpdates').style.display = 'none';
+            } catch (error) {
+                console.error('Error fetching user articles:', error);
+                showStatusPopup('Failed to fetch user articles. Please try again.', false);
+            }
+        }
+
+        // Function to toggle keyword selection and send POST request
+        async function toggleKeyword(element, keyword) {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                showLoginRequired();
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_ENDPOINT}/keyword/${keyword}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ token: token })
+                });
+
+                if (!response.ok) {
+                    const data = await response.json();
+                    showStatusPopup(data.message || 'Failed to update keyword', false);
+                }
+
+                // Fetch selected keywords
+                fetchSelectedKeywords(token);
+            } catch (error) {
+                console.error('Error updating keyword:', error);
+                showStatusPopup('Failed to update keyword. Please try again.', false);
+            }
+        }
+
+        // Function to fetch selected keywords
+        async function fetchSelectedKeywords(token) {
+            try {
+                const response = await fetch(`${API_ENDPOINT}/keyword/${token}`);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                const keywordsList = data.keywords_list;
+                const keywordsListElement = document.getElementById('keywordsList');
+                keywordsListElement.innerHTML = '';
+
+                if (keywordsList && keywordsList.length > 0) {
+                    keywordsList.forEach(keyword => {
+                        const keywordItem = document.createElement('li');
+                        keywordItem.textContent = keyword;
+                        keywordsListElement.appendChild(keywordItem);
+                    });
+                } else {
+                    const noKeywordsItem = document.createElement('li');
+                    noKeywordsItem.textContent = 'No keywords selected';
+                    keywordsListElement.appendChild(noKeywordsItem);
+                }
+            } catch (error) {
+                console.error('Error fetching selected keywords:', error);
+                showStatusPopup('Failed to fetch selected keywords. Please try again.', false);
+            }
+        }
+
+        // Add event listeners
+        document.getElementById('searchButton').addEventListener('click', handleSearch);
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                handleSearch();
+            }
+        });
+        document.getElementById('followUserButton').addEventListener('click', followUser);
+        document.getElementById('followUsernameInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                followUser();
+            }
+        });
+
+        // Terms checkbox event listener
+        document.getElementById('termsCheck').addEventListener('change', function() {
+            const password = document.getElementById('registerPassword').value;
+            const registerButton = document.getElementById('registerButton');
+            registerButton.disabled = !this.checked || !checkPasswordStrength(password);
+        });
+
+        // Fetch all articles on page load
+        fetchArticles();
+    </script>
+</body>
+</html>
